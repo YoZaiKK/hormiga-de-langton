@@ -51,13 +51,13 @@ class Ant:
         # Arriba
         if self.mirandoHacia == 0:
             self.y = (self.y - 1) % self.dimMapa[0]
-        # derecha            
+        # derecha
         if self.mirandoHacia == 1:
             self.x = (self.x + 1) % self.dimMapa[0]
-        # abajo            
+        # abajo
         if self.mirandoHacia == 2:
             self.y = (self.y + 1) % self.dimMapa[0]
-        # izquierda            
+        # izquierda
         if self.mirandoHacia == 3:
             self.x = (self.x - 1) % self.dimMapa[0]
 
@@ -68,7 +68,8 @@ class Ant:
         self.dibujarse(
             celdaQueCambia,
             self.color_negro
-            if colorPorPintar == 0 else self.color_blanco
+            if colorPorPintar == 0
+            else self.color_blanco
         )
 
     def dibujarse(self, poligono, color):

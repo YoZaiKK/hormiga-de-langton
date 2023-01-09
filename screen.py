@@ -8,8 +8,7 @@ pauseExect = True
 
 
 def inicializar():
-    # colors
-    cell_color = 0, 0, 0
+    # colors 
     bg_color = 255, 255, 255
     width, height = 500, 500
     screen = pygame.display.set_mode((height, width))
@@ -18,7 +17,8 @@ def inicializar():
     mapa = np.ones((width, height))
     # inicializacion de la hormiga
     hormiga = Ant(50, 50, width, height, screen)
-    animate(hormiga, mapa)
+    hormiga2 = Ant(60, 10, width, height, screen)
+    animate(hormiga, mapa, hormiga2)
 
 
 def event_handler(es):
@@ -32,11 +32,12 @@ def event_handler(es):
         # Get cursor pos and draw
 
 
-def animate(hormiga, mapa):
+def animate(hormiga, mapa, hormiga2):
     global running, pauseExect
     pygame.display.init()
     while running:
         event_handler(pygame.event.get())
         if not pauseExect:
             mapa = hormiga.run(mapa)
+            mapa = hormiga2.run(mapa)
             pygame.display.update()
