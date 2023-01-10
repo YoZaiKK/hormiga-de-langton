@@ -32,16 +32,16 @@ class Ant:
         ]
 
     def run(self, mapa):
+        # Su edad avanza con cada iteracion/llamada del metodo
+        self.edad += 1
         # Si la celda es blanca, entonces gira a la izquierda
         self.mapa = mapa
         if self.mapa[self.x][self.y] == 1:
             self.mapa[self.x][self.y] = 0  # cambiamos a cero el valor
-            self.mirandoHacia = (self.mirandoHacia - 1) % 4
-            '''Haremos un return para que se cambie el valor del mapa en esa celda'''
+            self.mirandoHacia = (self.mirandoHacia - 1) % 4 
         else:
             self.mapa[self.x][self.y] = 1
-            self.mirandoHacia = (self.mirandoHacia + 1) % 4
-            '''Haremos un return para que se cambie el valor del mapa en esa celda'''
+            self.mirandoHacia = (self.mirandoHacia + 1) % 4 
         self.moverse()
         return self.mapa
 
