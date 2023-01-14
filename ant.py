@@ -2,7 +2,7 @@ import pygame
 
 
 class Ant:
-    def __init__(self, x, y, mapX, mapY, screen):
+    def __init__(self, x, y, mapX, mapY, screen, clase):
         # 0,1,2,3 : arriba, derecha, abajo, izquierda
         self.mirandoHacia = 0
         self.edad = 0
@@ -12,6 +12,7 @@ class Ant:
         self.x, self.y = x, y
         self.dimMapa = [mapX, mapY]
         self.screen = screen
+        self.clase = clase
         self.dimention_cell_width = 1
         self.dimention_cell_height = 1
         print("mapX={}, mapY={}".format(mapX, mapY))
@@ -34,14 +35,15 @@ class Ant:
     def run(self, mapa):
         # Su edad avanza con cada iteracion/llamada del metodo
         self.edad += 1
+        # print(self.edad)
         # Si la celda es blanca, entonces gira a la izquierda
         self.mapa = mapa
         if self.mapa[self.x][self.y] == 1:
             self.mapa[self.x][self.y] = 0  # cambiamos a cero el valor
-            self.mirandoHacia = (self.mirandoHacia - 1) % 4 
+            self.mirandoHacia = (self.mirandoHacia - 1) % 4
         else:
             self.mapa[self.x][self.y] = 1
-            self.mirandoHacia = (self.mirandoHacia + 1) % 4 
+            self.mirandoHacia = (self.mirandoHacia + 1) % 4
         self.moverse()
         return self.mapa
 
@@ -74,6 +76,26 @@ class Ant:
 
     def dibujarse(self, poligono, color):
         pygame.draw.polygon(self.screen, color, poligono, 0)
+
+    def hayHormigasReinaAlrededor(self):
+        pass
+
+    def hayAlguienFreteAMi(self, matrizDeHormigas):
+        # Arriba
+        if self.mirandoHacia == 0:
+            y = (self.y - 1) % self.dimMapa[0]
+        # derecha
+        if self.mirandoHacia == 1:
+            x = (self.x + 1) % self.dimMapa[0]
+        # abajo
+        if self.mirandoHacia == 2:
+            y = (self.y + 1) % self.dimMapa[0]
+        # izquierda
+        if self.mirandoHacia == 3:
+            x = (self.x - 1) % self.dimMapa[0]
+        # Hay q hacer una funcion para hacer clases de manera aleatoria
+        newBorn = Ant(self.x, self.y, self.mapX, self.mapY, self.screen, 1)
+        return newBorn, False
 
 
 '''
