@@ -1,5 +1,6 @@
 from ant import Ant
 import math
+from random import randint as rint
 import pygame
 import numpy as np
 
@@ -15,6 +16,7 @@ def inicializar():
     screen.fill(bg_color)
     # Inicializamos el mapa
     mapa = np.ones((width, height))
+    mapaHormigas = generarHormigas(width, height, screen)
     # inicializacion de la hormiga
     hormiga = Ant(50, 50, width, height, screen, 1)
     hormiga2 = Ant(60, 10, width, height, screen, 1)
@@ -34,7 +36,7 @@ def event_handler(es):
 
 
 def animate(hormiga, mapa, hormiga2, hormiga3):
-    global running, pauseExect 
+    global running, pauseExect
     pygame.display.init()
     while running:
         event_handler(pygame.event.get())
@@ -46,27 +48,50 @@ def animate(hormiga, mapa, hormiga2, hormiga3):
 
 
 # def generarHormigas(width, height, screen):
-def generarHormigas():
+def generarHormigas(width, height, screen):
     hormigas = []
+    # Creamos una matriz llena de ceros, que luego usaremos para poner cosillas ahi
+    mapaHormigas = [width*[0]] * height
     numHormigas = 100
     queens: int = int(numHormigas*.01)
     workers: int = int(numHormigas*.55)
-    reps: int =int(numHormigas*.09)
-    soldiers: int = int(numHormigas*.35) 
+    reps: int = int(numHormigas*.09)
+    soldiers: int = int(numHormigas*.35)
     # Aqui lo que planeaba hacer es un for que nos recorra todas las instancias de nuestras hormigas, hacerlas y meterlas a nuestra lista llamada hormigas, luego hacer un return de la lista y dentro del while de nuestro mainloop, hacer un foreach de las hormigas
-    # '''Hay que checar que ocurre si agregas numeros a algo que estas recorriendo, si se sigue o si se queda ahi''' '''SI'''
-    for i in range(0,queens):
-        print(i)
-    for i in range(0,workers):
-        print(i)
-    for i in range(0,reps):
-        print(i)
-    for i in range(0,soldiers):
-        print(i)
-    # Prueva de si se agrega algo a una lista igual lo recorre y sip
-    # numerosTest = [1,2,3,4]
-    # for i in numerosTest:
-    #     print(i)
-    #     if(i == 2): 
-    #         numerosTest.append(6)
-    pass
+    for i in range(0, queens):
+        x, y = colocarHormiga(width, mapaHormigas)
+        nuevaHormiga = Ant(x, y, width, height, screen, 1)
+        hormigas.append(nuevaHormiga)
+        mapaHormigas[x][y] = (
+            nuevaHormiga.edad, nuevaHormiga.mirandoHacia, nuevaHormiga.clase)
+
+    for i in range(0, workers):
+        x, y = colocarHormiga(width, mapaHormigas)
+        nuevaHormiga = Ant(x, y, width, height, screen, 2)
+        hormigas.append(nuevaHormiga)
+        mapaHormigas[x][y] = (
+            nuevaHormiga.edad, nuevaHormiga.mirandoHacia, nuevaHormiga.clase)
+
+    for i in range(0, reps):
+        x, y = colocarHormiga(width, mapaHormigas)
+        nuevaHormiga = Ant(x, y, width, height, screen, 3)
+        hormigas.append(nuevaHormiga)
+        mapaHormigas[x][y] = (
+            nuevaHormiga.edad, nuevaHormiga.mirandoHacia, nuevaHormiga.clase)
+
+    for i in range(0, soldiers):
+        x, y = colocarHormiga(width, mapaHormigas)
+        nuevaHormiga = Ant(x, y, width, height, screen, 4)
+        hormigas.append(nuevaHormiga)
+        mapaHormigas[x][y] = (
+            nuevaHormiga.edad, nuevaHormiga.mirandoHacia, nuevaHormiga.clase)
+    print(mapaHormigas)
+
+
+def colocarHormiga(width, mapaHormigas):
+    x = rint(0, width-1)
+    y = rint(0, width-1)
+    while(mapaHormigas[x][y] != 0):
+        x = rint(0, width-1)
+        y = rint(0, width-1)
+    return x, y

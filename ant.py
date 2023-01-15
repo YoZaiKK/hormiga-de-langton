@@ -1,10 +1,11 @@
 import pygame
+from random import randint as rint
 
 
 class Ant:
     def __init__(self, x, y, mapX, mapY, screen, clase):
         # 0,1,2,3 : arriba, derecha, abajo, izquierda
-        self.mirandoHacia = 0
+        self.mirandoHacia = rint(0,3)
         self.edad = 0
         self.color = (255, 0, 0)
         self.color_negro = (0, 0, 0)
@@ -15,7 +16,7 @@ class Ant:
         self.clase = clase
         self.dimention_cell_width = 1
         self.dimention_cell_height = 1
-        print("mapX={}, mapY={}".format(mapX, mapY))
+        # print("mapX={}, mapY={}".format(mapX, mapY))
         # each square
         self.polygon = [
             (x, y),
