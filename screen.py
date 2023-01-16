@@ -12,16 +12,14 @@ def inicializar():
     # colors
     bg_color = 255, 255, 255
     width, height = 500, 500
-    screen = pygame.display.set_mode((height, width))
+    dimentionalCellWidth = 2
+    screen = pygame.display.set_mode(
+        (height*dimentionalCellWidth, width*dimentionalCellWidth))
     screen.fill(bg_color)
     # Inicializamos el mapa
     mapa = np.ones((width, height))
-    mapaHormigas = generarHormigas(width, height, screen)
-    # inicializacion de la hormiga
-    hormiga = Ant(50, 50, width, height, screen, 1)
-    hormiga2 = Ant(60, 10, width, height, screen, 1)
-    hormiga3 = Ant(100, 10, width, height, screen, 1)
-    animate(hormiga, mapa, hormiga2, hormiga3)
+    hormigas, mapaHormigas = generarHormigas(width, height, screen) 
+    animate(mapa, hormigas, mapaHormigas)
 
 
 def event_handler(es):
@@ -31,19 +29,17 @@ def event_handler(es):
             running = False
         if e.type == pygame.KEYDOWN:
             if e.key == pygame.K_SPACE:
-                pauseExect = True if not pauseExect else False
-        # Get cursor pos and draw
+                pauseExect = True if not pauseExect else False 
 
 
-def animate(hormiga, mapa, hormiga2, hormiga3):
+def animate(mapa, hormigas, mapaHormigas):
     global running, pauseExect
     pygame.display.init()
     while running:
         event_handler(pygame.event.get())
-        if not pauseExect:
-            # mapa = hormiga.run(mapa)
-            # mapa = hormiga2.run(mapa)
-            mapa = hormiga3.run(mapa)
+        if not pauseExect: 
+            for hormiga in hormigas:
+                mapa, mapaHormigas = hormiga.run(mapa, mapaHormigas, hormigas) 
             pygame.display.update()
 
 
@@ -63,7 +59,7 @@ def generarHormigas(width, height, screen):
         nuevaHormiga = Ant(x, y, width, height, screen, 1)
         hormigas.append(nuevaHormiga)
         mapaHormigas[x][y] = (
-            nuevaHormiga.edad, nuevaHormiga.mirandoHacia, nuevaHormiga.clase)
+            nuevaHormiga.edad, nuevaHormiga.mirandoHacia, nuevaHormiga.clase) 
 
     for i in range(0, workers):
         x, y = colocarHormiga(width, mapaHormigas)
@@ -84,14 +80,23 @@ def generarHormigas(width, height, screen):
         nuevaHormiga = Ant(x, y, width, height, screen, 4)
         hormigas.append(nuevaHormiga)
         mapaHormigas[x][y] = (
-            nuevaHormiga.edad, nuevaHormiga.mirandoHacia, nuevaHormiga.clase)
-    print(mapaHormigas)
+            nuevaHormiga.edad, nuevaHormiga.mirandoHacia, nuevaHormiga.clase) 
+    print("Total de hormigas generados: {}".format(len(hormigas)))
+    return hormigas, mapaHormigas
 
 
 def colocarHormiga(width, mapaHormigas):
-    x = rint(0, width-1)
-    y = rint(0, width-1)
-    while(mapaHormigas[x][y] != 0):
-        x = rint(0, width-1)
-        y = rint(0, width-1)
+    # # Default area: The Whole map
+    # x = rint(0, width-1)
+    # y = rint(0, width-1)
+    
+    # User area, change values
+    startArea = 0
+    endAreaX = 300
+    endAreaY = 300
+    x = rint(startArea, endAreaX)
+    y = rint(startArea, endAreaY)
+    while(mapaHormigas[x][y] != 0): 
+        x = rint(startArea, endAreaX)
+        y = rint(startArea, endAreaY)
     return x, y
